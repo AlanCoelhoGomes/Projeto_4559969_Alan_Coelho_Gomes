@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGHSS - VidaPlus</title>
+    <style>
+        /* CSS Variables para Design System */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray: #64748b;
+            --gray-dark: #334155;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Tema Escuro */
+        [data-theme="dark"] {
+            --light-color: #1e293b;
+            --dark-color: #f8fafc;
+            --gray-light: #334155;
+            --gray: #94a3b8;
+            --gray-dark: #cbd5e1;
+        }
+
+        /* Reset e Estilos Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header e Navegação */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Páginas (simulando SPA) */
+        .page {
+            display: none;
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--gray-light);
+        }
+
+        .card-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0da271;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--danger-color);
+        }
+
+        .is-invalid {
+            border-color: var(--danger-color);
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        /* Grid System */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -0.75rem;
+        }
+
+        .col {
+            flex: 1;
+            padding: 0 0.75rem;
+        }
+
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 0 0.75rem;
+        }
+
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 0.75rem;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 0.75rem;
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .alert-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-card-text {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Tabelas */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .table th {
+            background-color: var(--gray-light);
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .table tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+        }
+
+        .badge-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .badge-secondary {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        /* Wizard de Agendamento */
+        .wizard {
+            margin-bottom: 2rem;
+        }
+
+        .wizard-steps {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .wizard-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--gray-light);
+            z-index: 1;
+        }
+
+        .wizard-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wizard-step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .wizard-step.active .wizard-step-number {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .wizard-step.completed .wizard-step-number {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .wizard-step-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .wizard-step.active .wizard-step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .wizard-content {
+            margin-bottom: 2rem;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .col-lg-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .wizard-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .wizard-steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-lg-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Utilitários */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 2rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-4 {
+            margin-top: 2rem;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        /* Cards de especialidade selecionados */
+        .specialty-card.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .professional-card.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .professional-card.disabled {
+            opacity: 0.6;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            margin-top: 0.25rem;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="logo">
+                    <span class="logo-icon" aria-hidden="true">🏥</span>
+                    <h1>SGHSS - VidaPlus</h1>
+                </div>
+                <div class="nav-controls">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <div class="avatar" id="userAvatar">AG</div>
+                        <span id="userName">Alan Gomes</span>
+                        <button class="btn-logout" id="btnLogout">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Páginas -->
+    <main class="container">
+        <!-- Página de Login -->
+        <section id="loginPage" class="page active">
+            <div class="row justify-content-between">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Acesse sua conta</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="loginEmail" class="form-label">E-mail ou CPF</label>
+                                    <input type="text" class="form-control" id="loginEmail" aria-describedby="emailHelp" required>
+                                    <div class="invalid-feedback">Por favor, insira um e-mail ou CPF válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword" class="form-label">Senha</label>
+                                    <input type="password" class="form-control" id="loginPassword" required>
+                                    <div class="invalid-feedback">Por favor, insira sua senha.</div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                                </div>
+                                <div class="text-center">
+                                    <p>Não tem uma conta? <a href="#" id="goToRegister">Cadastre-se</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Acesso Rápido para Profissionais</h2>
+                        </div>
+                        <div class="card-body">
+                            <p>Profissionais de saúde podem acessar diretamente o dashboard com suas credenciais.</p>
+                            <button class="btn btn-outline w-100" id="professionalDemo">Acesso Demo Profissional</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página de Cadastro -->
+        <section id="registerPage" class="page">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Cadastro de Paciente</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="registerForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerName" class="form-label">Nome Completo</label>
+                                            <input type="text" class="form-control" id="registerName" required>
+                                            <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerCpf" class="form-label">CPF</label>
+                                            <input type="text" class="form-control" id="registerCpf" placeholder="000.000.000-00" required>
+                                            <div class="invalid-feedback">Por favor, insira um CPF válido.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerEmail" class="form-label">E-mail</label>
+                                            <input type="email" class="form-control" id="registerEmail" required>
+                                            <div class="invalid-feedback">Por favor, insira um e-mail válido.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerPhone" class="form-label">Telefone</label>
+                                            <input type="tel" class="form-control" id="registerPhone" placeholder="(00) 00000-0000" required>
+                                            <div class="invalid-feedback">Por favor, insira um telefone válido.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerPassword" class="form-label">Senha</label>
+                                            <input type="password" class="form-control" id="registerPassword" required>
+                                            <div class="invalid-feedback">A senha deve ter pelo menos 6 caracteres.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="registerConfirmPassword" class="form-label">Confirmar Senha</label>
+                                            <input type="password" class="form-control" id="registerConfirmPassword" required>
+                                            <div class="invalid-feedback">As senhas não coincidem.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="registerTerms" required>
+                                        <label class="form-check-label" for="registerTerms">
+                                            Concordo com os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>
+                                        </label>
+                                        <div class="invalid-feedback">Você deve concordar com os termos para continuar.</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+                                </div>
+                                <div class="text-center">
+                                    <p>Já tem uma conta? <a href="#" id="goToLogin">Faça login</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard do Paciente -->
+        <section id="patientDashboard" class="page">
+            <div class="mb-4">
+                <h2>Dashboard do Paciente</h2>
+                <p>Bem-vindo de volta, <span id="patientName">Alan</span>!</p>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📅</div>
+                    <h3 class="dashboard-card-title">Agendar Consulta</h3>
+                    <p class="dashboard-card-text">Marque uma consulta com nossos especialistas</p>
+                    <button class="btn btn-primary" id="goToAppointment">Agendar</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">💊</div>
+                    <h3 class="dashboard-card-title">Minhas Consultas</h3>
+                    <p class="dashboard-card-text">Visualize seu histórico de consultas</p>
+                    <button class="btn btn-outline" id="viewAppointments">Ver Consultas</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">👨‍⚕️</div>
+                    <h3 class="dashboard-card-title">Telemedicina</h3>
+                    <p class="dashboard-card-text">Acesse consultas online</p>
+                    <button class="btn btn-outline" id="goToTelemedicine">Acessar</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📋</div>
+                    <h3 class="dashboard-card-title">Meus Exames</h3>
+                    <p class="dashboard-card-text">Resultados e histórico de exames</p>
+                    <button class="btn btn-outline" id="viewExams">Visualizar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Próximas Consultas</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Especialidade</th>
+                                    <th>Profissional</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="upcomingAppointments">
+                                <!-- Consultas serão carregadas dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página de Agendamento -->
+        <section id="appointmentPage" class="page">
+            <div class="mb-4">
+                <h2>Agendar Consulta</h2>
+                <p>Siga os passos para agendar sua consulta</p>
+            </div>
+
+            <div class="wizard">
+                <div class="wizard-steps">
+                    <div class="wizard-step active" id="step1">
+                        <div class="wizard-step-number">1</div>
+                        <div class="wizard-step-label">Especialidade</div>
+                    </div>
+                    <div class="wizard-step" id="step2">
+                        <div class="wizard-step-number">2</div>
+                        <div class="wizard-step-label">Profissional</div>
+                    </div>
+                    <div class="wizard-step" id="step3">
+                        <div class="wizard-step-number">3</div>
+                        <div class="wizard-step-label">Data/Hora</div>
+                    </div>
+                    <div class="wizard-step" id="step4">
+                        <div class="wizard-step-number">4</div>
+                        <div class="wizard-step-label">Confirmação</div>
+                    </div>
+                </div>
+
+                <div class="wizard-content">
+                    <!-- Passo 1: Especialidade -->
+                    <div id="step1Content" class="step-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Selecione a Especialidade</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="cardiology">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">❤️</div>
+                                                <h4>Cardiologia</h4>
+                                                <p class="text-muted">Especialistas em saúde do coração</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="dermatology">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">🔬</div>
+                                                <h4>Dermatologia</h4>
+                                                <p class="text-muted">Cuidados com a pele</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="orthopedics">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">🦴</div>
+                                                <h4>Ortopedia</h4>
+                                                <p class="text-muted">Especialistas em ossos e articulações</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="pediatrics">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">👶</div>
+                                                <h4>Pediatria</h4>
+                                                <p class="text-muted">Cuidados com crianças</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="neurology">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">🧠</div>
+                                                <h4>Neurologia</h4>
+                                                <p class="text-muted">Especialistas em sistema nervoso</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 mb-3">
+                                        <div class="card specialty-card" data-specialty="general">
+                                            <div class="card-body text-center">
+                                                <div class="mb-2" style="font-size: 2rem;">👨‍⚕️</div>
+                                                <h4>Clínico Geral</h4>
+                                                <p class="text-muted">Atenção primária à saúde</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passo 2: Profissional -->
+                    <div id="step2Content" class="step-content d-none">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Selecione o Profissional</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="professionalList">
+                                    <!-- Profissionais serão carregados dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passo 3: Data/Hora -->
+                    <div id="step3Content" class="step-content d-none">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Selecione Data e Horário</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="appointmentDate" class="form-label">Data</label>
+                                            <input type="date" class="form-control" id="appointmentDate" min="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="appointmentTime" class="form-label">Horário</label>
+                                            <select class="form-control" id="appointmentTime">
+                                                <option value="">Selecione um horário</option>
+                                                <!-- Horários serão carregados dinamicamente -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="timeSlots" class="mt-3">
+                                    <!-- Slots de tempo serão carregados dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passo 4: Confirmação -->
+                    <div id="step4Content" class="step-content d-none">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Confirme seu Agendamento</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <h4>Resumo do Agendamento</h4>
+                                    <p><strong>Especialidade:</strong> <span id="confirmSpecialty">-</span></p>
+                                    <p><strong>Profissional:</strong> <span id="confirmProfessional">-</span></p>
+                                    <p><strong>Data:</strong> <span id="confirmDate">-</span></p>
+                                    <p><strong>Horário:</strong> <span id="confirmTime">-</span></p>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="confirmTerms" required>
+                                        <label class="form-check-label" for="confirmTerms">
+                                            Confirmo que li e concordo com os termos de agendamento
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-outline" id="prevStep" disabled>Voltar</button>
+                    <button class="btn btn-primary" id="nextStep">Próximo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard do Profissional -->
+        <section id="professionalDashboard" class="page">
+            <div class="mb-4">
+                <h2>Dashboard do Profissional</h2>
+                <p>Bem-vindo, <span id="professionalName">Dr. Carlos Silva</span>!</p>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📅</div>
+                    <h3 class="dashboard-card-title">Agenda do Dia</h3>
+                    <p class="dashboard-card-text">Veja suas consultas agendadas para hoje</p>
+                    <button class="btn btn-primary" id="viewTodaySchedule">Ver Agenda</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">👥</div>
+                    <h3 class="dashboard-card-title">Meus Pacientes</h3>
+                    <p class="dashboard-card-text">Acesse o histórico de pacientes</p>
+                    <button class="btn btn-outline" id="viewPatients">Ver Pacientes</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">💊</div>
+                    <h3 class="dashboard-card-title">Prescrições</h3>
+                    <p class="dashboard-card-text">Emita e gerencie prescrições</p>
+                    <button class="btn btn-outline" id="managePrescriptions">Gerenciar</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📊</div>
+                    <h3 class="dashboard-card-title">Relatórios</h3>
+                    <p class="dashboard-card-text">Acesse relatórios e estatísticas</p>
+                    <button class="btn btn-outline" id="viewReports">Visualizar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Consultas de Hoje</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Horário</th>
+                                    <th>Paciente</th>
+                                    <th>Idade</th>
+                                    <th>Motivo</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="todayAppointments">
+                                <tr>
+                                    <td>09:00</td>
+                                    <td>Ana Oliveira</td>
+                                    <td>42</td>
+                                    <td>Consulta de rotina</td>
+                                    <td><span class="badge badge-success">Confirmada</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary open-medical-record" data-patient="Ana Oliveira">Prontuário</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10:30</td>
+                                    <td>João Santos</td>
+                                    <td>35</td>
+                                    <td>Dor no peito</td>
+                                    <td><span class="badge badge-warning">Aguardando</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary open-medical-record" data-patient="João Santos">Prontuário</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>14:00</td>
+                                    <td>Maria Costa</td>
+                                    <td>58</td>
+                                    <td>Acompanhamento</td>
+                                    <td><span class="badge badge-success">Confirmada</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary open-medical-record" data-patient="Maria Costa">Prontuário</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal de Prontuário -->
+        <div class="modal" id="medicalRecordModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Prontuário Médico</h3>
+                    <button class="modal-close" id="closeMedicalRecord">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h4 id="modalPatientName">Paciente</h4>
+                        <p id="modalPatientInfo">Informações do paciente</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicalNotes" class="form-label">Anotações Médicas</label>
+                        <textarea class="form-control" id="medicalNotes" rows="5" placeholder="Registre observações sobre a consulta..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="prescription" class="form-label">Prescrição Médica</label>
+                        <textarea class="form-control" id="prescription" rows="3" placeholder="Prescrição de medicamentos..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" id="cancelMedicalRecord">Cancelar</button>
+                    <button class="btn btn-primary" id="saveMedicalRecord">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Telemedicina -->
+        <div class="modal" id="telemedicineModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Sala de Telemedicina</h3>
+                    <button class="modal-close" id="closeTelemedicine">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <div style="font-size: 4rem;">👨‍⚕️</div>
+                        <h4>Sala Virtual de Consulta</h4>
+                        <p>Esta funcionalidade conecta você ao profissional de saúde via vídeo</p>
+                    </div>
+                    <div class="alert alert-info">
+                        <p><strong>Instruções:</strong></p>
+                        <ul>
+                            <li>Certifique-se de ter uma câmera e microfone funcionando</li>
+                            <li>Conecte-se alguns minutos antes do horário agendado</li>
+                            <li>Tenha em mãos seus documentos e exames recentes</li>
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg" id="startVideoCall">Iniciar Videochamada</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dados de exemplo
+        const specialties = {
+            cardiology: {
+                name: "Cardiologia",
+                professionals: [
+                    { id: 1, name: "Dr. Carlos Silva", specialty: "Cardiologista", rating: 4.8, available: true },
+                    { id: 2, name: "Dra. Ana Rodrigues", specialty: "Cardiologista Pediátrica", rating: 4.9, available: true }
+                ]
+            },
+            dermatology: {
+                name: "Dermatologia",
+                professionals: [
+                    { id: 3, name: "Dra. Maria Santos", specialty: "Dermatologista", rating: 4.7, available: true },
+                    { id: 4, name: "Dr. Pedro Almeida", specialty: "Dermatologista", rating: 4.6, available: false }
+                ]
+            },
+            orthopedics: {
+                name: "Ortopedia",
+                professionals: [
+                    { id: 5, name: "Dr. Roberto Lima", specialty: "Ortopedista", rating: 4.5, available: true },
+                    { id: 6, name: "Dra. Claudia Mendes", specialty: "Ortopedista Pediátrica", rating: 4.8, available: true }
+                ]
+            },
+            pediatrics: {
+                name: "Pediatria",
+                professionals: [
+                    { id: 7, name: "Dra. Fernanda Oliveira", specialty: "Pediatra", rating: 4.9, available: true },
+                    { id: 8, name: "Dr. José Pereira", specialty: "Pediatra", rating: 4.7, available: true }
+                ]
+            },
+            neurology: {
+                name: "Neurologia",
+                professionals: [
+                    { id: 9, name: "Dr. Marcelo Costa", specialty: "Neurologista", rating: 4.8, available: true },
+                    { id: 10, name: "Dra. Patricia Rocha", specialty: "Neurologista", rating: 4.6, available: true }
+                ]
+            },
+            general: {
+                name: "Clínico Geral",
+                professionals: [
+                    { id: 11, name: "Dr. Antonio Ferreira", specialty: "Clínico Geral", rating: 4.5, available: true },
+                    { id: 12, name: "Dra. Sandra Nunes", specialty: "Clínico Geral", rating: 4.7, available: true }
+                ]
+            }
+        };
+
+        // Estado da aplicação
+        let currentUser = null;
+        let currentStep = 1;
+        let selectedSpecialty = null;
+        let selectedProfessional = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        let userAppointments = [];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            setMinDate();
+        });
+
+        function initializeApp() {
+            // Verificar tema salvo
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+            
+            // Verificar se há usuário logado (para demonstração)
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showUserInfo();
+                if (currentUser.role === 'patient') {
+                    showPage('patientDashboard');
+                    loadUserAppointments();
+                } else if (currentUser.role === 'professional') {
+                    showPage('professionalDashboard');
+                }
+            }
+        }
+
+        function setupEventListeners() {
+            // Navegação
+            document.getElementById('goToRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('registerPage');
+            });
+            
+            document.getElementById('goToLogin').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('loginPage');
+            });
+            
+            document.getElementById('professionalDemo').addEventListener('click', function() {
+                loginAsProfessional();
+            });
+            
+            document.getElementById('goToAppointment').addEventListener('click', function() {
+                showPage('appointmentPage');
+                resetAppointmentWizard();
+            });
+            
+            document.getElementById('goToTelemedicine').addEventListener('click', function() {
+                showTelemedicineModal();
+            });
+            
+            // Formulários
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            
+            // Wizard de agendamento
+            document.getElementById('nextStep').addEventListener('click', nextStep);
+            document.getElementById('prevStep').addEventListener('click', prevStep);
+            
+            // Seleção de especialidade
+            document.querySelectorAll('.specialty-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    selectSpecialty(this.dataset.specialty);
+                });
+            });
+            
+            // Data do agendamento
+            document.getElementById('appointmentDate').addEventListener('change', function() {
+                selectedDate = this.value;
+                loadTimeSlots();
+            });
+            
+            // Modal de prontuário
+            document.querySelectorAll('.open-medical-record').forEach(button => {
+                button.addEventListener('click', function() {
+                    openMedicalRecord(this.dataset.patient);
+                });
+            });
+            
+            document.getElementById('closeMedicalRecord').addEventListener('click', closeMedicalRecord);
+            document.getElementById('cancelMedicalRecord').addEventListener('click', closeMedicalRecord);
+            document.getElementById('saveMedicalRecord').addEventListener('click', saveMedicalRecord);
+            
+            // Modal de telemedicina
+            document.getElementById('closeTelemedicine').addEventListener('click', closeTelemedicine);
+            document.getElementById('startVideoCall').addEventListener('click', startVideoCall);
+            
+            // Alternância de tema
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Logout
+            document.getElementById('btnLogout').addEventListener('click', logout);
+            
+            // Logo clicável para voltar ao login
+            document.getElementById('logo').addEventListener('click', function() {
+                if (currentUser) {
+                    // Se estiver logado, vai para o dashboard apropriado
+                    if (currentUser.role === 'patient') {
+                        showPage('patientDashboard');
+                    } else if (currentUser.role === 'professional') {
+                        showPage('professionalDashboard');
+                    }
+                } else {
+                    // Se não estiver logado, vai para a página de login
+                    showPage('loginPage');
+                }
+            });
+        }
+
+        function setMinDate() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const yyyy = tomorrow.getFullYear();
+            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const dd = String(tomorrow.getDate()).padStart(2, '0');
+            
+            const minDate = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('appointmentDate').min = minDate;
+        }
+
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar a página solicitada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Se for o dashboard do paciente, carregar os agendamentos
+            if (pageId === 'patientDashboard') {
+                loadUserAppointments();
+            }
+        }
+
+        function showUserInfo() {
+            if (currentUser) {
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userAvatar').textContent = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                if (currentUser.role === 'patient') {
+                    document.getElementById('patientName').textContent = currentUser.name.split(' ')[0];
+                } else if (currentUser.role === 'professional') {
+                    document.getElementById('professionalName').textContent = currentUser.name;
+                }
+            } else {
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Validação simples
+            if (!email || !password) {
+                showAlert('Por favor, preencha todos os campos.', 'danger');
+                return;
+            }
+            
+            // Simulação de login bem-sucedido
+            currentUser = {
+                name: 'Alan Gomes',
+                email: email,
+                role: 'patient'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showUserInfo();
+            showPage('patientDashboard');
+            loadUserAppointments();
+            showAlert('Login realizado com sucesso!', 'success');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const cpf = document.getElementById('registerCpf').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const terms = document.getElementById('registerTerms').checked;
+            
+            // Validações
+            if (!name || !cpf || !email || !phone || !password || !confirmPassword) {
+                showAlert('Por favor, preencha todos os campos.', 'danger');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('As senhas não coincidem.', 'danger');
+                return;
+            }
+            
+            if (!terms) {
+                showAlert('Você deve aceitar os termos de uso.', 'danger');
+                return;
+            }
+            
+            // Simulação de cadastro bem-sucedido
+            currentUser = {
+                name: name,
+                email: email,
+                role: 'patient'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showUserInfo();
+            showPage('patientDashboard');
+            loadUserAppointments();
+            showAlert('Cadastro realizado com sucesso!', 'success');
+        }
+
+        function loginAsProfessional() {
+            currentUser = {
+                name: 'Dr. Carlos Silva',
+                email: 'carlos.silva@vidaphus.com',
+                role: 'professional'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showUserInfo();
+            showPage('professionalDashboard');
+            showAlert('Acesso profissional realizado com sucesso!', 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showUserInfo();
+            showPage('loginPage');
+            showAlert('Logout realizado com sucesso!', 'success');
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            const themeIcon = document.getElementById('themeIcon');
+            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        function showAlert(message, type) {
+            // Criar elemento de alerta
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // Adicionar ao topo da página atual
+            const currentPage = document.querySelector('.page.active');
+            currentPage.insertBefore(alert, currentPage.firstChild);
+            
+            // Remover após 5 segundos
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Wizard de Agendamento
+        function resetAppointmentWizard() {
+            currentStep = 1;
+            selectedSpecialty = null;
+            selectedProfessional = null;
+            selectedDate = null;
+            selectedTime = null;
+            
+            updateWizardSteps();
+            document.getElementById('prevStep').disabled = true;
+            document.getElementById('nextStep').textContent = 'Próximo';
+            
+            // Limpar seleções visuais
+            document.querySelectorAll('.specialty-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        function updateWizardSteps() {
+            // Atualizar visualização dos passos
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`);
+                const content = document.getElementById(`step${i}Content`);
+                
+                if (i === currentStep) {
+                    step.classList.add('active');
+                    content.classList.remove('d-none');
+                } else if (i < currentStep) {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                    content.classList.add('d-none');
+                } else {
+                    step.classList.remove('active', 'completed');
+                    content.classList.add('d-none');
+                }
+            }
+            
+            // Atualizar botões
+            document.getElementById('prevStep').disabled = currentStep === 1;
+            
+            if (currentStep === 4) {
+                document.getElementById('nextStep').textContent = 'Confirmar Agendamento';
+            } else {
+                document.getElementById('nextStep').textContent = 'Próximo';
+            }
+        }
+
+        function nextStep() {
+            // Validações antes de avançar
+            if (currentStep === 1 && !selectedSpecialty) {
+                showAlert('Por favor, selecione uma especialidade.', 'warning');
+                return;
+            }
+            
+            if (currentStep === 2 && !selectedProfessional) {
+                showAlert('Por favor, selecione um profissional.', 'warning');
+                return;
+            }
+            
+            if (currentStep === 3 && (!selectedDate || !selectedTime)) {
+                showAlert('Por favor, selecione uma data e horário.', 'warning');
+                return;
+            }
+            
+            if (currentStep === 4) {
+                if (!document.getElementById('confirmTerms').checked) {
+                    showAlert('Por favor, confirme os termos de agendamento.', 'warning');
+                    return;
+                }
+                
+                // Finalizar agendamento
+                confirmAppointment();
+                return;
+            }
+            
+            currentStep++;
+            updateWizardSteps();
+            
+            // Carregar conteúdo específico do passo
+            if (currentStep === 2) {
+                loadProfessionals();
+            } else if (currentStep === 3) {
+                loadTimeSlots();
+            } else if (currentStep === 4) {
+                updateConfirmation();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateWizardSteps();
+            }
+        }
+
+        function selectSpecialty(specialtyId) {
+            selectedSpecialty = specialtyId;
+            
+            // Remover seleção anterior
+            document.querySelectorAll('.specialty-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar seleção atual
+            document.querySelector(`.specialty-card[data-specialty="${specialtyId}"]`).classList.add('selected');
+            
+            // Habilitar próximo passo
+            document.getElementById('nextStep').disabled = false;
+        }
+
+        function loadProfessionals() {
+            const professionalList = document.getElementById('professionalList');
+            professionalList.innerHTML = '';
+            
+            if (!selectedSpecialty || !specialties[selectedSpecialty]) {
+                professionalList.innerHTML = '<p>Nenhuma especialidade selecionada.</p>';
+                return;
+            }
+            
+            const specialty = specialties[selectedSpecialty];
+            const professionals = specialty.professionals;
+            
+            if (professionals.length === 0) {
+                professionalList.innerHTML = '<p>Nenhum profissional disponível para esta especialidade.</p>';
+                return;
+            }
+            
+            professionals.forEach(prof => {
+                const profCard = document.createElement('div');
+                profCard.className = `card mb-3 professional-card ${prof.available ? '' : 'disabled'}`;
+                profCard.dataset.id = prof.id;
+                
+                profCard.innerHTML = `
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5>${prof.name}</h5>
+                                <p class="mb-1">${prof.specialty}</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="mr-2">⭐ ${prof.rating}</span>
+                                    <span class="badge ${prof.available ? 'badge-success' : 'badge-secondary'}">
+                                        ${prof.available ? 'Disponível' : 'Indisponível'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-${prof.available ? 'primary' : 'secondary'}" 
+                                        ${prof.available ? '' : 'disabled'}>
+                                    Selecionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                if (prof.available) {
+                    profCard.querySelector('button').addEventListener('click', function() {
+                        selectProfessional(prof.id);
+                    });
+                }
+                
+                professionalList.appendChild(profCard);
+            });
+        }
+
+        function selectProfessional(professionalId) {
+            if (!selectedSpecialty) return;
+            
+            const specialty = specialties[selectedSpecialty];
+            selectedProfessional = specialty.professionals.find(p => p.id === professionalId);
+            
+            // Remover seleção anterior
+            document.querySelectorAll('.professional-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar seleção atual
+            document.querySelector(`.professional-card[data-id="${professionalId}"]`).classList.add('selected');
+            
+            // Habilitar próximo passo
+            document.getElementById('nextStep').disabled = false;
+        }
+
+        function loadTimeSlots() {
+            if (!selectedProfessional) return;
+            
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            const timeSelect = document.getElementById('appointmentTime');
+            
+            timeSlotsContainer.innerHTML = '';
+            timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
+            
+            // Gerar slots de tempo (simulação)
+            const timeSlots = [
+                '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+                '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
+            ];
+            
+            // Alguns horários ocupados (simulação)
+            const occupiedSlots = ['09:00', '14:30', '16:00'];
+            
+            timeSlots.forEach(slot => {
+                const isOccupied = occupiedSlots.includes(slot);
+                
+                // Adicionar ao select
+                const option = document.createElement('option');
+                option.value = slot;
+                option.textContent = slot;
+                option.disabled = isOccupied;
+                timeSelect.appendChild(option);
+                
+                // Adicionar botão visual
+                const slotElement = document.createElement('button');
+                slotElement.type = 'button';
+                slotElement.className = `btn ${isOccupied ? 'btn-secondary' : 'btn-outline'} m-1`;
+                slotElement.textContent = slot;
+                slotElement.disabled = isOccupied;
+                
+                if (!isOccupied) {
+                    slotElement.addEventListener('click', function() {
+                        // Remover seleção anterior
+                        document.querySelectorAll('#timeSlots button').forEach(btn => {
+                            btn.classList.remove('btn-primary');
+                            btn.classList.add('btn-outline');
+                        });
+                        
+                        // Adicionar seleção atual
+                        this.classList.remove('btn-outline');
+                        this.classList.add('btn-primary');
+                        
+                        selectedTime = this.textContent;
+                        document.getElementById('appointmentTime').value = selectedTime;
+                    });
+                }
+                
+                timeSlotsContainer.appendChild(slotElement);
+            });
+        }
+
+        function updateConfirmation() {
+            if (selectedSpecialty && selectedProfessional && selectedDate && selectedTime) {
+                document.getElementById('confirmSpecialty').textContent = specialties[selectedSpecialty].name;
+                document.getElementById('confirmProfessional').textContent = selectedProfessional.name;
+                document.getElementById('confirmDate').textContent = formatDate(selectedDate);
+                document.getElementById('confirmTime').textContent = selectedTime;
+            }
+        }
+
+        function confirmAppointment() {
+            // Criar novo agendamento
+            const newAppointment = {
+                id: Date.now(), // ID único baseado no timestamp
+                date: formatDate(selectedDate),
+                time: selectedTime,
+                specialty: specialties[selectedSpecialty].name,
+                professional: selectedProfessional.name,
+                status: 'Agendada'
+            };
+            
+            // Adicionar à lista de agendamentos do usuário
+            userAppointments.push(newAppointment);
+            
+            // Salvar no localStorage
+            localStorage.setItem(`appointments_${currentUser.email}`, JSON.stringify(userAppointments));
+            
+            showAlert('Consulta agendada com sucesso!', 'success');
+            
+            // Redirecionar para dashboard
+            setTimeout(() => {
+                showPage('patientDashboard');
+            }, 1500);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function loadUserAppointments() {
+            // Carregar agendamentos do localStorage
+            const savedAppointments = localStorage.getItem(`appointments_${currentUser.email}`);
+            userAppointments = savedAppointments ? JSON.parse(savedAppointments) : [];
+            
+            // Atualizar a tabela de agendamentos
+            const tbody = document.getElementById('upcomingAppointments');
+            tbody.innerHTML = '';
+            
+            if (userAppointments.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhuma consulta agendada.</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            userAppointments.forEach(appointment => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                    <td>${appointment.specialty}</td>
+                    <td>${appointment.professional}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline">Detalhes</button>
+                        <button class="btn btn-sm btn-danger" onclick="cancelAppointment(${appointment.id})">Cancelar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function cancelAppointment(appointmentId) {
+            if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
+                // Remover o agendamento da lista
+                userAppointments = userAppointments.filter(apt => apt.id !== appointmentId);
+                
+                // Atualizar o localStorage
+                localStorage.setItem(`appointments_${currentUser.email}`, JSON.stringify(userAppointments));
+                
+                // Recarregar a lista
+                loadUserAppointments();
+                
+                showAlert('Consulta cancelada com sucesso!', 'success');
+            }
+        }
+
+        // Modal de Prontuário
+        function openMedicalRecord(patientName) {
+            document.getElementById('modalPatientName').textContent = patientName;
+            document.getElementById('modalPatientInfo').textContent = `Prontuário médico de ${patientName}`;
+            document.getElementById('medicalNotes').value = '';
+            document.getElementById('prescription').value = '';
+            
+            document.getElementById('medicalRecordModal').classList.add('active');
+        }
+
+        function closeMedicalRecord() {
+            document.getElementById('medicalRecordModal').classList.remove('active');
+        }
+
+        function saveMedicalRecord() {
+            const notes = document.getElementById('medicalNotes').value;
+            const prescription = document.getElementById('prescription').value;
+            
+            // Simular salvamento
+            showAlert('Prontuário salvo com sucesso!', 'success');
+            closeMedicalRecord();
+        }
+
+        // Modal de Telemedicina
+        function showTelemedicineModal() {
+            document.getElementById('telemedicineModal').classList.add('active');
+        }
+
+        function closeTelemedicine() {
+            document.getElementById('telemedicineModal').classList.remove('active');
+        }
+
+        function startVideoCall() {
+            showAlert('Conectando à videochamada...', 'info');
+            closeTelemedicine();
+            
+            // Simulação de conexão
+            setTimeout(() => {
+                showAlert('Videochamada iniciada! Em uma implementação real, você estaria conectado ao profissional.', 'success');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
