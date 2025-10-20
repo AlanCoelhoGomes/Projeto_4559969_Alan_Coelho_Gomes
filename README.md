@@ -2,12 +2,7 @@
 PROJETO MULTIDISCIPLINAR  ÊNFASE: DESENVOLVIMENTO FRONT-END SISTEMA DE GESTÃO HOSPITALAR E DE SERVIÇOS DE SAÚDE (SGHSS)
 link da pagina online: https://alancoelhogomes.github.io/Projeto_4559969_Alan_Coelho_Gomes/
 
-
-
-
-
-
-
+Link dos casos: https://github.com/AlanCoelhoGomes/Projeto_4559969_Alan_Coelho_Gomes/blob/main/_Casos%20de%20Teste%20Funcionais%20.pdf
 
 
 
